@@ -1,0 +1,27 @@
+# Dependencies (large — keep out of git AND ideally out of OneDrive sync)
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Env / secrets
+.env
+.env.local
+
+# Native
+ios/
+android/
+
+# Misc
+*.log
+.DS_Store
+
+# Build output
+dist/
+
+# Design assets (large, not needed for build)
+*.zip
+*.png
