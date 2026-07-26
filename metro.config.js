@@ -12,4 +12,14 @@ config.resolver.extraNodeModules = {
   '@opentelemetry/api': require.resolve('./src/lib/otel-shim.js'),
 };
 
+// Expo modules use class names at runtime (registerWebModule checks them).
+// Metro's default minifier mangles class names in production, breaking those
+// checks and causing "Module implementation must be a class" errors.
+// Preserving class/function names fixes this with minimal bundle size impact.
+config.transformer.minifierConfig = {
+  ...config.transformer.minifierConfig,
+  keep_classnames: true,
+  keep_fnames: true,
+};
+
 module.exports = config;
