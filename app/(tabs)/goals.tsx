@@ -64,8 +64,8 @@ export default function Goals() {
   const [assetName, setAssetName] = useState('');
   const [assetType, setAssetType] = useState<AssetType>('fund');
   const [assetValue, setAssetValue] = useState('');
-  const [editingAsset, setEditingAsset] = useState<string | null>(null);
-  const [editAssetValue, setEditAssetValue] = useState('');
+  const [fundingAsset, setFundingAsset] = useState<string | null>(null);
+  const [fundAssetAmount, setFundAssetAmount] = useState('');
 
   // Aggregates
   const totalAssetValue = useMemo(
@@ -132,15 +132,30 @@ export default function Goals() {
     setAssetValue('');
   }
 
-  function submitEditAsset() {
-    const value = Number(editAssetValue.replace(',', '.'));
-    if (!editingAsset || isNaN(value) || value < 0) return toast('Introduce un valor válido', 'info');
+  function submitFundAsset() {
+    const amount = Number(fundAssetAmount.replace(',', '.'));
+    if (!fundingAsset || !amount || amount <= 0) return toast('Introduce una cantidad válida', 'info');
+    if (amount > liquidSavings) return toast('No tienes suficiente liquidez', 'error');
+
+    const asset = assets.find((a) => a.id === fundingAsset);
+    if (!asset) return;
+
+    // 1. Add amount to the asset's value
+    const newAssetValue = asset.current_value + amount;
     updateAssetValue.mutate(
-      { assetId: editingAsset, value },
-      { onError: (e: any) => toast(e?.message ?? 'No se pudo actualizar', 'error') },
+      { assetId: fundingAsset, value: newAssetValue },
+      { onError: (e: any) => toast(e?.message ?? 'No se pudo actualizar el activo', 'error') },
     );
-    setEditingAsset(null);
-    setEditAssetValue('');
+
+    // 2. Deduct from liquid savings
+    const newLiquidity = liquidSavings - amount;
+    updateLiquidSavings.mutate(newLiquidity, {
+      onError: (e: any) => toast(e?.message ?? 'No se pudo actualizar la liquidez', 'error'),
+    });
+
+    toast('Fondos transferidos', 'success');
+    setFundingAsset(null);
+    setFundAssetAmount('');
   }
 
   function handleDeleteAsset(id: string) {
@@ -248,9 +263,9 @@ export default function Goals() {
                     key={a.id}
                     asset={a}
                     currency={currency}
-                    onEdit={() => {
-                      setEditingAsset(a.id);
-                      setEditAssetValue(String(a.current_value));
+                    onFund={() => {
+                      setFundingAsset(a.id);
+                      setFundAssetAmount('');
                     }}
                     onDelete={() => handleDeleteAsset(a.id)}
                   />
@@ -413,25 +428,31 @@ export default function Goals() {
         </Pressable>
       </Modal>
 
-      {/* Edit asset value modal */}
-      <Modal visible={!!editingAsset} transparent animationType="fade" onRequestClose={() => setEditingAsset(null)}>
-        <Pressable style={styles.backdrop} onPress={() => setEditingAsset(null)}>
+      {/* Fund asset modal */}
+      <Modal visible={!!fundingAsset} transparent animationType="fade" onRequestClose={() => setFundingAsset(null)}>
+        <Pressable style={styles.backdrop} onPress={() => setFundingAsset(null)}>
           <Pressable style={styles.modal} onPress={() => {}}>
-            <Text style={styles.modalTitle}>Actualizar valor</Text>
+            <Text style={styles.modalTitle}>Añadir fondos</Text>
             <Text style={styles.modalSub}>
-              {assets.find((a) => a.id === editingAsset)?.name}
+              {assets.find((a) => a.id === fundingAsset)?.name}
             </Text>
+            <View style={styles.liquidityHint}>
+              <Ionicons name="water-outline" size={16} color={colors.accentBlue} />
+              <Text style={styles.liquidityHintText}>
+                Liquidez disponible: {formatMoney(liquidSavings, currency)}
+              </Text>
+            </View>
             <TextInput
               style={styles.modalInput}
-              value={editAssetValue}
-              onChangeText={setEditAssetValue}
-              placeholder="0.00"
+              value={fundAssetAmount}
+              onChangeText={setFundAssetAmount}
+              placeholder="Cantidad a invertir"
               placeholderTextColor={colors.textMuted}
               keyboardType="decimal-pad"
               autoFocus
             />
-            <Pressable style={styles.modalCta} onPress={submitEditAsset}>
-              <Text style={styles.modalCtaText}>Guardar</Text>
+            <Pressable style={styles.modalCta} onPress={submitFundAsset}>
+              <Text style={styles.modalCtaText}>Invertir</Text>
             </Pressable>
           </Pressable>
         </Pressable>
@@ -684,5 +705,22 @@ const styles = StyleSheet.create({
   typeChipTextActive: {
     color: colors.brand,
     fontWeight: font.weight.bold as any,
+  },
+
+  // Fund asset modal
+  liquidityHint: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    backgroundColor: '#EAF2FF',
+    borderRadius: radius.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    marginTop: spacing.sm,
+  },
+  liquidityHintText: {
+    fontSize: font.size.sm,
+    color: colors.accentBlue,
+    fontWeight: font.weight.medium as any,
   },
 });

@@ -28,12 +28,12 @@ const TYPE_COLORS: Record<string, string> = {
 export function AssetCard({
   asset,
   currency = 'EUR',
-  onEdit,
+  onFund,
   onDelete,
 }: {
   asset: Asset;
   currency?: string;
-  onEdit?: () => void;
+  onFund?: () => void;
   onDelete?: () => void;
 }) {
   const typeColor = TYPE_COLORS[asset.asset_type] ?? TYPE_COLORS.other;
@@ -54,10 +54,10 @@ export function AssetCard({
       </View>
 
       <View style={styles.actions}>
-        {onEdit && (
-          <Pressable style={styles.actionBtn} onPress={onEdit}>
-            <Ionicons name="create-outline" size={15} color={colors.brand} />
-            <Text style={styles.actionText}>Editar</Text>
+        {onFund && (
+          <Pressable style={styles.actionBtn} onPress={onFund}>
+            <Ionicons name="add-circle-outline" size={15} color={colors.brand} />
+            <Text style={styles.actionText}>Añadir fondos</Text>
           </Pressable>
         )}
         {onDelete && (
