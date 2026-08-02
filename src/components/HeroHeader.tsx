@@ -56,7 +56,7 @@ export function HeroHeader({
             <Ionicons name="arrow-up" size={13} color={colors.white} />
             <Text style={styles.amountLabel}>Total Balance</Text>
           </View>
-          <Text style={styles.balance}>{formatMoney(balance, currency)}</Text>
+          <Text style={styles.balance} numberOfLines={1} adjustsFontSizeToFit>{formatMoney(balance, currency)}</Text>
         </View>
         <View style={styles.divider} />
         <View style={styles.amountCol}>
@@ -64,7 +64,7 @@ export function HeroHeader({
             <Ionicons name="arrow-down" size={13} color={colors.white} />
             <Text style={styles.amountLabel}>Total Expense</Text>
           </View>
-          <Text style={styles.expense}>−{formatMoney(expense, currency)}</Text>
+          <Text style={styles.expense} numberOfLines={1} adjustsFontSizeToFit>−{formatMoney(expense, currency)}</Text>
         </View>
       </View>
 
@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
   amountCol: { flex: 1 },
   labelRow: { flexDirection: 'row', alignItems: 'center', gap: 4, opacity: 0.9 },
   amountLabel: { color: colors.white, fontSize: font.size.sm, fontWeight: font.weight.medium as any },
-  balance: { color: colors.white, fontSize: font.size.xl, fontWeight: font.weight.heavy as any, marginTop: 4 },
-  expense: { color: '#EAF2FF', fontSize: font.size.xl, fontWeight: font.weight.heavy as any, marginTop: 4 },
+  balance: { color: colors.white, fontSize: font.size.xl - 2, fontWeight: font.weight.heavy as any, marginTop: 4, minWidth: 60 },
+  expense: { color: '#EAF2FF', fontSize: font.size.xl - 2, fontWeight: font.weight.heavy as any, marginTop: 4, minWidth: 60 },
   divider: { width: 1, height: 44, backgroundColor: colors.white, opacity: 0.4, marginHorizontal: spacing.md },
   hint: { color: colors.textPrimary, opacity: 0.85, fontSize: font.size.sm, marginTop: spacing.sm },
 });

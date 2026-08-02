@@ -8,6 +8,7 @@ const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   wallet: 'wallet',
   laptop: 'laptop',
   gift: 'gift',
+  people: 'people',
   home: 'home',
   cart: 'cart',
   receipt: 'receipt',
@@ -20,7 +21,6 @@ const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   plane: 'airplane',
   movie: 'film',
   chart: 'trending-up',
-  coin: 'logo-bitcoin',
 };
 
 export function CategoryIcon({

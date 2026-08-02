@@ -78,13 +78,13 @@ const styles = StyleSheet.create({
   },
   tab: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 6 },
   center: {
-    width: 58,
-    height: 58,
-    borderRadius: 29,
+    width: 54,
+    height: 54,
+    borderRadius: 27,
     backgroundColor: colors.brand,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -28,
+    marginTop: -24,
     ...shadow.card,
   },
 });

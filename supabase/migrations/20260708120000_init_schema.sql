@@ -124,5 +124,5 @@ insert into public.categories (name, type, icon, color) values
   ('Restaurants',     'expense_leisure',   'restaurant', '#FF7A00'),
   ('Travel',          'expense_leisure',   'plane',      '#FF7A00'),
   ('Entertainment',   'expense_leisure',   'movie',      '#FF7A00'),
-  ('DCA Index Funds', 'investment',        'chart',      '#0FBE7C'),
-  ('DCA Crypto',      'investment',        'coin',       '#0FBE7C');
+  ('Parents',         'income_variable',   'people',     '#2FD98A'),
+  ('DCA Index Funds', 'investment',        'chart',      '#0FBE7C');

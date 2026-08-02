@@ -21,6 +21,7 @@ export interface Profile {
   display_name: string | null;
   currency: string;
   monthly_budget_limit: number;
+  liquid_savings: number;
   created_at: string;
 }
 
@@ -68,6 +69,17 @@ export interface FinancialGoal {
   current_amount: number;
   target_date: string | null;
   status: GoalStatus;
+  created_at: string;
+}
+
+export type AssetType = 'fund' | 'bond' | 'etf' | 'other';
+
+export interface Asset {
+  id: string;
+  user_id: string;
+  name: string;
+  asset_type: AssetType;
+  current_value: number;
   created_at: string;
 }
 

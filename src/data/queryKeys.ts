@@ -9,5 +9,6 @@ export const qk = {
   breakdown: (month: string) => ['breakdown', month] as const,
   healthSeries: ['health-series'] as const,
   goals: ['goals'] as const,
+  assets: ['assets'] as const,
   recurring: ['recurring'] as const,
 };
