@@ -7,6 +7,9 @@
 -- Add the new enum value to category_type
 ALTER TYPE public.category_type ADD VALUE IF NOT EXISTS 'expense_freelance';
 
+-- Commit the enum type change so the new value can be used in INSERT
+COMMIT;
+
 -- Seed default freelance categories (global defaults, user_id = NULL)
 INSERT INTO public.categories (name, type, icon, color) VALUES
   ('Software',    'expense_freelance', 'laptop',    '#E8590C'),
