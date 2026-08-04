@@ -4,8 +4,12 @@
 -- as a separate column and count it towards expense_total.
 -- =============================================================================
 
+-- Drop existing views in cascade order so we can change column layout
+DROP VIEW IF EXISTS public.v_monthly_health;
+DROP VIEW IF EXISTS public.v_monthly_summary;
+
 -- ---------- Monthly summary --------------------------------------------------
-CREATE OR REPLACE VIEW public.v_monthly_summary
+CREATE VIEW public.v_monthly_summary
 WITH (security_invoker = true) AS
 SELECT
   m.user_id,
