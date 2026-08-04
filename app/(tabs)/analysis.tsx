@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { HeroHeader } from '@/components/HeroHeader';
+import { MonthPicker } from '@/components/MonthPicker';
 import { IncomeExpenseBars, type BarDatum } from '@/components/charts/IncomeExpenseBars';
 import { ExpensePie, type PieSegment } from '@/components/charts/ExpensePie';
 import { useHealthSeries, useCategoryBreakdown, useMonthlyHealth } from '@/data/dashboard';
@@ -13,7 +14,7 @@ import { colors, spacing, font, radius } from '@/theme/tokens';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export default function Analysis() {
-  const month = monthKey(new Date());
+  const [month, setMonth] = useState(monthKey(new Date()));
   const { data: profile } = useProfile();
   const currency = profile?.currency ?? 'EUR';
 
@@ -58,7 +59,9 @@ export default function Analysis() {
         />
 
         <View style={styles.sheet}>
-          <Text style={styles.h2}>Income & Expenses</Text>
+          <MonthPicker month={month} onChange={setMonth} />
+
+          <Text style={[styles.h2, { marginTop: spacing.md }]}>Income & Expenses</Text>
           <IncomeExpenseBars data={bars.length ? bars : [{ label: MONTHS[new Date().getMonth()], income: totals.income, expense: totals.expenses }]} />
 
           <View style={styles.totalsRow}>

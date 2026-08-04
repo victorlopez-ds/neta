@@ -17,6 +17,7 @@ const ORDER: CategoryType[] = [
   'expense_essential',
   'expense_personal',
   'expense_leisure',
+  'expense_freelance',
   'investment',
 ];
 

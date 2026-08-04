@@ -21,6 +21,7 @@ const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   plane: 'airplane',
   movie: 'film',
   chart: 'trending-up',
+  briefcase: 'briefcase',
 };
 
 export function CategoryIcon({

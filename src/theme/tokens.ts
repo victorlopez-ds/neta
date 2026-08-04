@@ -41,6 +41,7 @@ export const tierColor: Record<CategoryType, string> = {
   expense_essential: '#2F6BFF',
   expense_personal: '#7A5CFF',
   expense_leisure: '#FF7A00',
+  expense_freelance: '#E8590C',
   investment: '#0FBE7C',
 };
 
@@ -50,6 +51,7 @@ export const tierLabel: Record<CategoryType, string> = {
   expense_essential: 'Essential',
   expense_personal: 'Personal',
   expense_leisure: 'Leisure',
+  expense_freelance: 'Freelance',
   investment: 'Investment',
 };
 

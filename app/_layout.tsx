@@ -27,6 +27,10 @@ export default function RootLayout() {
                   name="movement/new"
                   options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
                 />
+                <Stack.Screen
+                  name="movement/edit"
+                  options={{ presentation: 'modal', animation: 'slide_from_bottom' }}
+                />
               </Stack>
             </AppLockGate>
           </ToastProvider>

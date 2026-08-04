@@ -140,3 +140,78 @@ export function useDeleteMovement(month: string) {
     },
   });
 }
+
+export interface UpdateMovementInput {
+  id: string;
+  category: Category;
+  amount: number;
+  concept: string;
+  date: string;
+  tags?: string[];
+}
+
+/**
+ * Optimistic update. Swaps the row in the month cache so the UI reflects
+ * changes instantly, then reconciles with the server.
+ */
+export function useUpdateMovement(month: string) {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: UpdateMovementInput): Promise<Movement> => {
+      const { data, error } = await supabase
+        .from('movements')
+        .update({
+          category_id: input.category.id,
+          amount: input.amount,
+          concept: input.concept,
+          date: input.date,
+          tags: input.tags ?? [],
+        })
+        .eq('id', input.id)
+        .select('*')
+        .single();
+      if (error) throw error;
+      return data as Movement;
+    },
+
+    onMutate: async (input) => {
+      await client.cancelQueries({ queryKey: qk.movements(month) });
+      const previous = client.getQueryData<MovementWithCategory[]>(qk.movements(month));
+
+      client.setQueryData<MovementWithCategory[]>(qk.movements(month), (old = []) =>
+        old
+          .map((m) =>
+            m.id === input.id
+              ? {
+                  ...m,
+                  category_id: input.category.id,
+                  amount: input.amount,
+                  concept: input.concept,
+                  date: input.date,
+                  tags: input.tags ?? [],
+                  category: input.category,
+                }
+              : m,
+          )
+          .sort((a, b) => b.date.localeCompare(a.date)),
+      );
+
+      return { previous };
+    },
+
+    onError: (_err, _input, context) => {
+      if (context?.previous) {
+        client.setQueryData(qk.movements(month), context.previous);
+      }
+    },
+
+    onSettled: () => {
+      client.invalidateQueries({ queryKey: qk.movements(month) });
+      client.invalidateQueries({ queryKey: qk.monthlyHealth(month) });
+      client.invalidateQueries({ queryKey: qk.breakdown(month) });
+      client.invalidateQueries({ queryKey: qk.healthSeries });
+    },
+  });
+}
+

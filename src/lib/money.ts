@@ -50,7 +50,8 @@ export interface MonthTotals {
   essential: number;
   personal: number;
   leisure: number;
-  expenses: number; // essential + personal + leisure (investment excluded)
+  freelance: number;
+  expenses: number; // essential + personal + leisure + freelance (investment excluded)
   investment: number;
   net: number; // income - expenses
   savingsRate: number; // (income - expenses) / income * 100, investment counts as savings
@@ -66,6 +67,7 @@ export function computeTotals(movements: MovementWithCategory[]): MonthTotals {
     essential = 0,
     personal = 0,
     leisure = 0,
+    freelance = 0,
     investment = 0;
 
   for (const m of movements) {
@@ -83,17 +85,20 @@ export function computeTotals(movements: MovementWithCategory[]): MonthTotals {
       case 'expense_leisure':
         leisure += m.amount;
         break;
+      case 'expense_freelance':
+        freelance += m.amount;
+        break;
       case 'investment':
         investment += m.amount;
         break;
     }
   }
 
-  const expenses = essential + personal + leisure;
+  const expenses = essential + personal + leisure + freelance;
   const net = income - expenses;
   const savingsRate = income === 0 ? 0 : Math.round((net / income) * 1000) / 10;
 
-  return { income, essential, personal, leisure, expenses, investment, net, savingsRate };
+  return { income, essential, personal, leisure, freelance, expenses, investment, net, savingsRate };
 }
 
 export function monthKey(date: Date | string): string {

@@ -11,6 +11,7 @@ export type CategoryType =
   | 'expense_essential'
   | 'expense_personal'
   | 'expense_leisure'
+  | 'expense_freelance'
   | 'investment';
 
 export type RecurrenceFrequency = 'weekly' | 'monthly' | 'yearly';
@@ -91,6 +92,7 @@ export interface MonthlyHealth {
   expense_essential: number;
   expense_personal: number;
   expense_leisure: number;
+  expense_freelance: number;
   expense_total: number;
   investment_total: number;
   net_balance: number;
@@ -113,4 +115,5 @@ export const EXPENSE_TYPES: CategoryType[] = [
   'expense_essential',
   'expense_personal',
   'expense_leisure',
+  'expense_freelance',
 ];

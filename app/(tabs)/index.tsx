@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, Pressable, RefreshControl } from 'r
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { HeroHeader } from '@/components/HeroHeader';
+import { MonthPicker } from '@/components/MonthPicker';
 import { SegmentedTabs } from '@/components/SegmentedTabs';
 import { MovementRow } from '@/components/MovementRow';
 import { useMovements } from '@/data/movements';
@@ -14,7 +15,7 @@ type Period = 'daily' | 'weekly' | 'monthly';
 
 export default function Home() {
   const router = useRouter();
-  const month = monthKey(new Date());
+  const [month, setMonth] = useState(monthKey(new Date()));
   const { data: profile } = useProfile();
   const currency = profile?.currency ?? 'EUR';
   const { data: movements = [], isRefetching, refetch } = useMovements(month);
@@ -56,9 +57,11 @@ export default function Home() {
         />
 
         <View style={styles.sheet}>
+          <MonthPicker month={month} onChange={setMonth} />
+
           {/* Highlight card: DCA/investment + savings rate — the metrics the kit's
               generic "revenue/food" card doesn't cover. */}
-          <View style={styles.statCard}>
+          <View style={[styles.statCard, { marginTop: spacing.md }]}>
             <View style={styles.statCol}>
               <Text style={styles.statLabel}>Invested (DCA)</Text>
               <Text style={styles.statValue}>{formatMoney(totals.investment, currency)}</Text>
@@ -99,7 +102,12 @@ export default function Home() {
             </View>
           ) : (
             visible.map((m) => (
-              <MovementRow key={m.id} movement={m} currency={currency} />
+              <MovementRow
+                key={m.id}
+                movement={m}
+                currency={currency}
+                onPress={() => router.push(`/movement/edit?id=${m.id}`)}
+              />
             ))
           )}
         </View>

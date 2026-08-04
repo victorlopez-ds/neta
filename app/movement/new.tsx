@@ -23,7 +23,7 @@ import type { Category, CategoryType } from '@/types/database';
 
 type Group = 'expense' | 'income' | 'savings';
 const GROUP_TYPES: Record<'expense' | 'income', CategoryType[]> = {
-  expense: ['expense_essential', 'expense_personal', 'expense_leisure'],
+  expense: ['expense_essential', 'expense_personal', 'expense_leisure', 'expense_freelance'],
   income: ['income_fixed', 'income_variable'],
 };
 
