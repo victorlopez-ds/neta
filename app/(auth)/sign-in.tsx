@@ -67,6 +67,10 @@ export default function SignIn() {
             onChangeText={setPassword}
           />
 
+          <Link href="/(auth)/forgot-password" style={styles.forgotLink}>
+            Forgot your password?
+          </Link>
+
           <Pressable style={[styles.cta, busy && { opacity: 0.6 }]} onPress={submit} disabled={busy}>
             {busy ? <ActivityIndicator color={colors.white} /> : <Text style={styles.ctaText}>Log In</Text>}
           </Pressable>
@@ -116,5 +120,6 @@ const styles = StyleSheet.create({
   ctaText: { color: colors.white, fontSize: font.size.md, fontWeight: font.weight.bold as any },
   footer: { flexDirection: 'row', justifyContent: 'center', marginTop: spacing.xl },
   muted: { color: colors.textMuted, fontSize: font.size.sm },
+  forgotLink: { color: colors.brand, fontSize: font.size.sm, fontWeight: font.weight.medium as any, textAlign: 'right', marginTop: spacing.sm },
   link: { color: colors.brand, fontWeight: font.weight.bold as any, fontSize: font.size.sm },
 });
