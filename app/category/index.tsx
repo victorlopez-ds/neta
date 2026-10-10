@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, Alert, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -36,15 +36,26 @@ export default function CategoryList() {
 
   function confirmDelete(id: number, name: string, isCustom: boolean) {
     if (!isCustom) return toast('Default categories can’t be deleted', 'info');
+
+    const handleDelete = () => {
+      deleteCategory.mutate(id, {
+        onError: (e: any) => toast(e?.message ?? 'Could not delete', 'error'),
+      });
+    };
+
+    if (Platform.OS === 'web') {
+      if (typeof window !== 'undefined' && window.confirm(`Remove "${name}"? Existing movements keep their history.`)) {
+        handleDelete();
+      }
+      return;
+    }
+
     Alert.alert('Delete category', `Remove "${name}"? Existing movements keep their history.`, [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Delete',
         style: 'destructive',
-        onPress: () =>
-          deleteCategory.mutate(id, {
-            onError: (e: any) => toast(e?.message ?? 'Could not delete', 'error'),
-          }),
+        onPress: handleDelete,
       },
     ]);
   }

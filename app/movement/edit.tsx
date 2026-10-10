@@ -93,6 +93,22 @@ export default function EditMovement() {
 
   function confirmDelete() {
     if (!id) return;
+
+    const handleDelete = () => {
+      deleteMovement.mutate(id, {
+        onError: (e: any) => toast(e?.message ?? 'No se pudo eliminar', 'error'),
+        onSuccess: () => toast('Movimiento eliminado', 'success'),
+      });
+      router.back();
+    };
+
+    if (Platform.OS === 'web') {
+      if (typeof window !== 'undefined' && window.confirm('¿Seguro que quieres eliminar este movimiento? No se puede deshacer.')) {
+        handleDelete();
+      }
+      return;
+    }
+
     Alert.alert(
       'Eliminar movimiento',
       '¿Seguro que quieres eliminar este movimiento? No se puede deshacer.',
@@ -101,13 +117,7 @@ export default function EditMovement() {
         {
           text: 'Eliminar',
           style: 'destructive',
-          onPress: () => {
-            deleteMovement.mutate(id, {
-              onError: (e: any) => toast(e?.message ?? 'No se pudo eliminar', 'error'),
-              onSuccess: () => toast('Movimiento eliminado', 'success'),
-            });
-            router.back();
-          },
+          onPress: handleDelete,
         },
       ],
     );

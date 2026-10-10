@@ -138,6 +138,7 @@ export function useDeleteMovement(month: string) {
       client.invalidateQueries({ queryKey: qk.movements(month) });
       client.invalidateQueries({ queryKey: qk.monthlyHealth(month) });
       client.invalidateQueries({ queryKey: qk.breakdown(month) });
+      client.invalidateQueries({ queryKey: qk.healthSeries });
     },
   });
 }
