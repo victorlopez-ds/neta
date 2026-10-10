@@ -22,6 +22,13 @@ const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   movie: 'film',
   chart: 'trending-up',
   briefcase: 'briefcase',
+  cafe: 'cafe',
+  fitness: 'fitness',
+  barbell: 'barbell',
+  book: 'book',
+  cut: 'cut',
+  sparkles: 'sparkles',
+  heart: 'heart',
 };
 
 export function CategoryIcon({
