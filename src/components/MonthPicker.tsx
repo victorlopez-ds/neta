@@ -16,17 +16,11 @@ function shiftMonth(month: string, delta: number): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 }
 
-/** Returns the current month as "YYYY-MM". */
-function currentMonth(): string {
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-}
 
 /**
  * ◀  August 2026  ▶
  *
- * Arrow-based month navigator. The right arrow is disabled when the selected
- * month is the current month (no peeking into the future).
+ * Arrow-based month navigator.
  */
 export function MonthPicker({
   month,
@@ -35,8 +29,6 @@ export function MonthPicker({
   month: string;
   onChange: (month: string) => void;
 }) {
-  const isCurrentMonth = month === currentMonth();
-
   return (
     <View style={styles.row}>
       <Pressable onPress={() => onChange(shiftMonth(month, -1))} hitSlop={12} style={styles.arrow}>
@@ -46,12 +38,11 @@ export function MonthPicker({
       <Text style={styles.label}>{formatMonth(month)}</Text>
 
       <Pressable
-        onPress={() => !isCurrentMonth && onChange(shiftMonth(month, 1))}
+        onPress={() => onChange(shiftMonth(month, 1))}
         hitSlop={12}
-        style={[styles.arrow, isCurrentMonth && styles.arrowDisabled]}
-        disabled={isCurrentMonth}
+        style={styles.arrow}
       >
-        <Ionicons name="chevron-forward" size={20} color={isCurrentMonth ? colors.border : colors.textPrimary} />
+        <Ionicons name="chevron-forward" size={20} color={colors.textPrimary} />
       </Pressable>
     </View>
   );

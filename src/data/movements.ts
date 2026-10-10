@@ -12,7 +12,8 @@ import type {
 function monthRange(month: string): { from: string; to: string } {
   const [y, m] = month.split('-').map(Number);
   const from = `${month}-01`;
-  const to = new Date(y, m, 0).toISOString().slice(0, 10); // day 0 of next month = last day
+  const lastDay = new Date(y, m, 0).getDate();
+  const to = `${month}-${String(lastDay).padStart(2, '0')}`;
   return { from, to };
 }
 
